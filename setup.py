@@ -7,15 +7,15 @@ import sys
 import datetime
 
 ROOT_PACKAGE = 'django-throttle'
-VERSION = '0.1'
+VERSION = '0.2'
 
 def long_description():
     """
-    Returns package long description from README
+    Returns package long description from README.rst
     """
     def read(what):
         return open(os.path.join(
-                    os.path.dirname(__file__), '{0}.rst'.format(what))).\
+                    os.path.dirname(__file__), '{0}.md'.format(what))).\
                     read()
 
 
@@ -28,14 +28,15 @@ def version():
     """
     return VERSION
 
+
 if __name__ == '__main__':
-    setup(name             = ROOT_PACKAGE,
-          description      = 'Simple application for throttling HTTP requests to views',
-          author           = 'marazmiki',
-          author_email     = 'marazmiki@gmail.com',
-          version          = version(),
-          long_description = long_description(),
-          packages         = find_packages(),
+    setup(name=ROOT_PACKAGE,
+          description='Simple application for throttling HTTP requests to views',
+          author='marazmiki',
+          author_email='marazmiki@gmail.com',
+          version=version(),
+          long_description=long_description(),
+          packages=find_packages(),
           classifiers  = [
               'Environment :: Web Environment',
               'Programming Language :: Python',
