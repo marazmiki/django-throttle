@@ -86,11 +86,8 @@ urlpatterns = [
 
 try:
     from django.views.generic import View
-
 except ImportError as e:
-    print e
     pass
-
 else:
     class IndexView(ThrottleMixin, View):
         """
