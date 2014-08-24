@@ -16,7 +16,7 @@ def long_description():
     def read(what):
         filename = os.path.join(
             os.path.dirname(__file__),
-            '{0}.md'.format(what))
+            '{0}.rst'.format(what))
         with open(filename) as fp:
             return fp.read()
 
