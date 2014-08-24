@@ -6,7 +6,7 @@ import os
 
 
 ROOT_PACKAGE = 'django-throttle'
-VERSION = '0.3'
+VERSION = '0.3.1'
 
 
 def long_description():
