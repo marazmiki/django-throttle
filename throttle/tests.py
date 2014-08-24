@@ -48,9 +48,11 @@ class ThrottleTest(test.TestCase):
         """
         Tests custom response decorator argument
         """
-        self.assertEquals(200, self.request(self.name_map['response']).status_code)
-        self.assertEquals(401, self.request(self.name_map['response']).status_code)
-        self.assertEquals(True, 'Response' in self.request(self.name_map['response']).content)
+        good = self.request(self.name_map['response'])
+        bad = self.request(self.name_map['response'])
+        self.assertEquals(200, good.status_code)
+        self.assertEquals(401, bad.status_code)
+        self.assertContains(text='Response', response=bad, status_code=401)
 
     def test_response_callable(self):
         """
@@ -58,7 +60,7 @@ class ThrottleTest(test.TestCase):
         """
         self.assertEquals(200, self.request(self.name_map['response_callable']).status_code)
         self.assertEquals(401, self.request(self.name_map['response_callable']).status_code)
-        self.assertEquals(True, 'Request Response' in self.request(self.name_map['response_callable']).content)
+        self.assertContains(text='Request Response', response=self.request(self.name_map['response_callable']), status_code=401)
 
     def test_duration(self):
         """
