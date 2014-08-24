@@ -11,8 +11,8 @@ class ThrottleMixin(object):
         return self.request.META.get('HTTP_X_FORWARDED_FOR') or self.request.META.get('REMOTE_ADDR')
 
     def cache_key(self):
-        return '{addr}.{path}'.format(addr=self.remote_addr(), 
-            path=self.request.get_full_path())
+        return '{addr}.{path}'.format(addr=self.remote_addr(),
+                                      path=self.request.get_full_path())
 
     def dispatch(self, request, *args, **kwargs):
         self.request = request
@@ -20,7 +20,7 @@ class ThrottleMixin(object):
         self.kwargs = kwargs
 
         if (self.response and not isinstance(self.response, HttpResponse)
-            and not callable(self.response)):
+           and not callable(self.response)):
             raise TypeError("The `response` keyword argument must "
                             "be a either HttpResponse instance or "
                             "callable with `request` argument")
@@ -45,36 +45,36 @@ class ThrottleMixin(object):
 
 def throttle(func, method='POST', duration=15, response=None):
     """
-    This decorator is based on Django snippet #1573 code that 
+    This decorator is based on Django snippet #1573 code that
     can be found at http://djangosnippets.org/snippets/1573/
 
     Simple usage
 
         @throttle
         def my_view(request):
-            ""
+            pass
 
     You can specify each of HTTP method
 
         @throttle(method='GET')
         def my_get_view(request)
-            ""
+            pass
 
     Custom
 
     """
     if response:
-        if not isinstance(response, HttpResponse) and  not callable(response):
-            raise TypeError, "The `response` keyword argument must " + \
-                             "be a either HttpResponse instance or " + \
-                             "callable with `request` argument.    "
+        if not isinstance(response, HttpResponse) and not callable(response):
+            raise TypeError("The `response` keyword argument must "
+                            "be a either HttpResponse instance or "
+                            "callable with `request` argument.")
 
     def inner(request, *args, **kwargs):
         if request.method == method:
             remote_addr = request.META.get('HTTP_X_FORWARDED_FOR') or \
-                          request.META.get('REMOTE_ADDR')
+                request.META.get('REMOTE_ADDR')
 
-            key = '{addr}.{path}'.format(addr=remote_addr, 
+            key = '{addr}.{path}'.format(addr=remote_addr,
                                          path=request.get_full_path())
             if cache.get(key):
                 if callable(response):

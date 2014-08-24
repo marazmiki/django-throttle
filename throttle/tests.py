@@ -4,7 +4,6 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from throttle.decorators import throttle
 from throttle.views import ThrottleMixin
-import time
 
 
 class ThrottleTest(test.TestCase):
@@ -20,10 +19,9 @@ class ThrottleTest(test.TestCase):
         'response_callable': 'test_response_callable',
     }
 
-
     def request(self, url, method='post', **kwargs):
         """
-        The helper function that emulates HTTP request to 
+        The helper function that emulates HTTP request to
         Django views with given method
         """
         url = reverse(url)
@@ -78,8 +76,8 @@ def index(request):
 
 
 urlpatterns = [
-    url(r'^$',  throttle(index), name='test_default'),
-    url(r'^method/$',   throttle(index, method='GET'), name='test_method'),
+    url(r'^$', throttle(index), name='test_default'),
+    url(r'^method/$', throttle(index, method='GET'), name='test_method'),
     url(r'^duration/$', throttle(index, duration=0), name='test_duration'),
     url(r'^response/$', throttle(index, response=HttpResponse('Response', status=401)), name='test_response'),
     url(r'^response/callable/$', throttle(index, response=lambda request: HttpResponse('Request Response', status=401)), name='test_response_callable'),
@@ -105,8 +103,8 @@ else:
             return self.get(request)
 
     urlpatterns += [
-        url(r'^cbv/$',  IndexView.as_view(), name='test_cbv_default'),
-        url(r'^cbv/method/$',   IndexView.as_view(method='GET'), name='test_cbv_method'),
+        url(r'^cbv/$', IndexView.as_view(), name='test_cbv_default'),
+        url(r'^cbv/method/$', IndexView.as_view(method='GET'), name='test_cbv_method'),
         url(r'^cbv/duration/$', IndexView.as_view(duration=0), name='test_cbv_duration'),
         url(r'^cbv/response/$', IndexView.as_view(response=HttpResponse('Response', status=401)), name='test_cbv_response'),
         url(r'^cbv/response/callable/$', IndexView.as_view(response=lambda request: HttpResponse('Request Response', status=401)), name='test_cbv_response_callable'),
@@ -117,11 +115,9 @@ else:
         ThrottleMixin test suite
         """
         name_map = {
-        'default': 'test_cbv_default',
+            'default': 'test_cbv_default',
             'method': 'test_cbv_method',
             'duration': 'test_cbv_duration',
             'response': 'test_cbv_response',
             'response_callable': 'test_cbv_response_callable',
         }
-
-

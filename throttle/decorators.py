@@ -1,9 +1,10 @@
 from django.core.cache import cache
 from django.http import HttpResponseForbidden, HttpResponse
 
+
 def throttle(func, method='POST', duration=15, response=None):
     """
-    This decorator is based on Django snippet #1573 code that 
+    This decorator is based on Django snippet #1573 code that
     can be found at http://djangosnippets.org/snippets/1573/
 
     Simple usage
@@ -22,25 +23,23 @@ def throttle(func, method='POST', duration=15, response=None):
 
     """
     if response:
-        if not isinstance(response, HttpResponse) and  not callable(response):
-            raise TypeError, "The `response` keyword argument must " + \
-                             "be a either HttpResponse instance or " + \
-                             "callable with `request` argument.    "
+        if not isinstance(response, HttpResponse) and not callable(response):
+            raise TypeError("The `response` keyword argument must "
+                            "be a either HttpResponse instance or "
+                            "callable with `request` argument.")
 
     def inner(request, *args, **kwargs):
         if request.method == method:
             remote_addr = request.META.get('HTTP_X_FORWARDED_FOR') or \
-                          request.META.get('REMOTE_ADDR')
+                request.META.get('REMOTE_ADDR')
 
-            key = '{addr}.{path}'.format(addr=remote_addr, 
+            key = '{addr}.{path}'.format(addr=remote_addr,
                                          path=request.get_full_path())
             if cache.get(key):
                 if callable(response):
                     return response(request)
-
                 elif response:
                     return response
-
                 else:
                     return HttpResponseForbidden('Try slowing down a little.')
 
