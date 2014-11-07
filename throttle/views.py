@@ -8,7 +8,8 @@ class ThrottleMixin(object):
     response = None
 
     def remote_addr(self):
-        return self.request.META.get('HTTP_X_FORWARDED_FOR') or self.request.META.get('REMOTE_ADDR')
+        return self.request.META.get('HTTP_X_FORWARDED_FOR') or \
+            self.request.META.get('REMOTE_ADDR')
 
     def cache_key(self):
         return '{addr}.{path}'.format(addr=self.remote_addr(),

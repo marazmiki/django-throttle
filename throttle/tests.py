@@ -2,6 +2,7 @@ from django import test
 from django.conf.urls import url
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
+from django.views.generic import View
 from throttle.decorators import throttle
 from throttle.views import ThrottleMixin
 
@@ -86,37 +87,42 @@ urlpatterns = [
 ]
 
 
-try:
-    from django.views.generic import View
-except ImportError as e:
-    pass
-else:
-    class IndexView(ThrottleMixin, View):
-        """
-        Class based view for mixin test
-        """
-        def get(self, request):
-            return index(request)
+class IndexView(ThrottleMixin, View):
+    """
+    Class based view for mixin test
+    """
+    def get(self, request):
+        return index(request)
 
-        def post(self, request):
-            return self.get(request)
+    def post(self, request):
+        return self.get(request)
 
-    urlpatterns += [
-        url(r'^cbv/$', IndexView.as_view(), name='test_cbv_default'),
-        url(r'^cbv/method/$', IndexView.as_view(method='GET'), name='test_cbv_method'),
-        url(r'^cbv/duration/$', IndexView.as_view(duration=0), name='test_cbv_duration'),
-        url(r'^cbv/response/$', IndexView.as_view(response=HttpResponse('Response', status=401)), name='test_cbv_response'),
-        url(r'^cbv/response/callable/$', IndexView.as_view(response=lambda request: HttpResponse('Request Response', status=401)), name='test_cbv_response_callable'),
-    ]
+urlpatterns += [
+    url(r'^cbv/$', IndexView.as_view(),
+        name='test_cbv_default'),
+    url(r'^cbv/method/$', IndexView.as_view(method='GET'),
+        name='test_cbv_method'),
+    url(r'^cbv/duration/$', IndexView.as_view(duration=0),
+        name='test_cbv_duration'),
+    url(r'^cbv/response/$',
+        IndexView.as_view(response=HttpResponse('Response', status=401)),
+        name='test_cbv_response'),
+    url(r'^cbv/response/callable/$',
+        IndexView.as_view(
+            response=lambda request: HttpResponse('Request Response',
+                                                  status=401)),
+        name='test_cbv_response_callable'),
+]
 
-    class ThrottleMixinTest(ThrottleTest):
-        """
-        ThrottleMixin test suite
-        """
-        name_map = {
-            'default': 'test_cbv_default',
-            'method': 'test_cbv_method',
-            'duration': 'test_cbv_duration',
-            'response': 'test_cbv_response',
-            'response_callable': 'test_cbv_response_callable',
-        }
+
+class ThrottleMixinTest(ThrottleTest):
+    """
+    ThrottleMixin test suite
+    """
+    name_map = {
+        'default': 'test_cbv_default',
+        'method': 'test_cbv_method',
+        'duration': 'test_cbv_duration',
+        'response': 'test_cbv_response',
+        'response_callable': 'test_cbv_response_callable',
+    }

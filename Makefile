@@ -6,7 +6,7 @@ release:
 
 
 flake8:
-	flake8 --ignore=E501,F811 throttle
+	flake8 --ignore=E501 throttle
 	flake8 --ignore=E501 tests.py
 	flake8 --ignore=E501 setup.py
 

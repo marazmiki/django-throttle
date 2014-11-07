@@ -7,19 +7,19 @@ python:
   - "3.4"
 
 env:
-  - DJANGO=django==1.4.14
-  - DJANGO=django==1.5.9
-  - DJANGO=django==1.6.6
-  - DJANGO="https://www.djangoproject.com/m/releases/1.7/Django-1.7c3.tar.gz"
+  - DJANGO=django==1.4.16
+  - DJANGO=django==1.5.11
+  - DJANGO=django==1.6.8
+  - DJANGO=django==1.7.1
 
 matrix:
   exclude:
     - python: "2.6"
-      env: DJANGO="https://www.djangoproject.com/m/releases/1.7/Django-1.7c3.tar.gz"
+      env: DJANGO=django==1.7.1
     - python: "3.3"
-      env: DJANGO=django==1.4.14
+      env: DJANGO=django==1.4.16
     - python: "3.4"
-      env: DJANGO=django==1.4.14
+      env: DJANGO=django==1.4.16
 
 install:
   - pip install -q $DJANGO
